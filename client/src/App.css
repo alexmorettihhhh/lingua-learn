@@ -1,0 +1,92 @@
+/* Дополнительные стили для приложения */
+body {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #000000;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Стили для анимаций */
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+/* AMOLED Theme Overrides */
+.bg-white {
+  background-color: #121212 !important;
+}
+
+.text-gray-700 {
+  color: #b3b3b3 !important;
+}
+
+.text-gray-600 {
+  color: #b3b3b3 !important;
+}
+
+.text-gray-500 {
+  color: #757575 !important;
+}
+
+.border {
+  border-color: #2d2d2d !important;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.bg-blue-600 {
+  background-color: #8c52ff !important;
+}
+
+.bg-blue-700 {
+  background-color: #7a3ff0 !important;
+}
+
+.hover\:bg-blue-700:hover {
+  background-color: #7a3ff0 !important;
+}
+
+.text-blue-600 {
+  color: #8c52ff !important;
+}
+
+.hover\:text-blue-800:hover {
+  color: #6a2ee0 !important;
+}
+
+.bg-blue-50 {
+  background-color: #1e1e1e !important;
+}
+
+.text-blue-700 {
+  color: #8c52ff !important;
+}
+
+.hover\:bg-blue-100:hover {
+  background-color: #2d2d2d !important;
+} 
