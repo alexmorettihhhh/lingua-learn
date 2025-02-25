@@ -23,6 +23,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminWordList from './pages/admin/AdminWordList';
 import AdminLessonList from './pages/admin/AdminLessonList';
 import AdminUserList from './pages/admin/AdminUserList';
+import AdminLessonCreate from './pages/admin/AdminLessonCreate';
 import NotFound from './pages/NotFound';
 
 // Стили
@@ -65,6 +66,7 @@ const App: React.FC = () => {
           <Route path="/admin" element={<AdminRoute element={<AdminDashboard />} />} />
           <Route path="/admin/words" element={<AdminRoute element={<AdminWordList />} />} />
           <Route path="/admin/lessons" element={<AdminRoute element={<AdminLessonList />} />} />
+          <Route path="/admin/lessons/create" element={<AdminRoute element={<AdminLessonCreate />} />} />
           <Route path="/admin/users" element={<AdminRoute element={<AdminUserList />} />} />
 
           {/* Маршрут 404 */}

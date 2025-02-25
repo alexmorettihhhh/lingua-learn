@@ -139,9 +139,9 @@ const LessonLearn: React.FC = () => {
           <span className="text-sm font-medium text-amoled-text-secondary">Прогресс</span>
           <span className="text-sm font-medium text-amoled-text-secondary">{progress}%</span>
         </div>
-        <div className="w-full bg-amoled-dark rounded-full h-2.5">
+        <div className="w-full bg-amoled-dark rounded-full h-2.5 overflow-hidden border border-amoled-light">
           <div 
-            className="bg-amoled-accent h-2.5 rounded-full transition-all duration-500" 
+            className="bg-amoled-accent h-2.5 rounded-full transition-all duration-500 animate-pulse-slow" 
             style={{ width: `${progress}%` }}
           ></div>
         </div>
@@ -154,14 +154,24 @@ const LessonLearn: React.FC = () => {
     
     if (!currentWord) {
       return (
-        <div className="text-center py-8">
-          <p className="text-amoled-text-secondary">Слово не найдено</p>
+        <div className="text-center py-12 bg-amoled-dark rounded-lg border border-amoled-light shadow-lg animate-fade-in">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-amoled-text-secondary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h3 className="text-xl font-bold text-amoled-text-primary mb-2">Слово не найдено</h3>
+          <p className="text-amoled-text-secondary">Не удалось загрузить текущее слово</p>
+          <button
+            onClick={handleRestartLesson}
+            className="mt-6 bg-amoled-accent hover:bg-amoled-accent-hover text-amoled-text-primary font-medium py-2 px-4 rounded-lg transition-colors"
+          >
+            Начать заново
+          </button>
         </div>
       );
     }
     
     return (
-      <div className="bg-amoled-dark rounded-lg p-8 shadow-lg border border-amoled-light">
+      <div className="bg-amoled-dark rounded-lg p-8 shadow-lg border border-amoled-light animate-fade-in">
         <div className="mb-8 text-center">
           <h3 className="text-3xl font-bold text-amoled-text-primary mb-2">{currentWord.original}</h3>
           {currentWord.examples && currentWord.examples.length > 0 && (
@@ -245,35 +255,53 @@ const LessonLearn: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-screen bg-amoled-dark">
+    <div className="container mx-auto px-4 py-8 min-h-screen bg-amoled-black">
       <div className="mb-6">
         <Link to={`/lessons/${id}`} className="text-amoled-accent hover:text-amoled-accent-hover flex items-center transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
           </svg>
-          Вернуться к уроку
+          <span>Вернуться к уроку</span>
         </Link>
       </div>
 
+      {lesson && (
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-amoled-text-primary mb-2">{lesson.title}</h1>
+          <div className="flex items-center space-x-3">
+            <span className="text-sm bg-amoled-gray text-amoled-accent px-3 py-1 rounded-full">
+              {lesson.language === 'en' ? 'Английский' :
+               lesson.language === 'fr' ? 'Французский' :
+               lesson.language === 'de' ? 'Немецкий' :
+               lesson.language === 'es' ? 'Испанский' :
+               lesson.language === 'it' ? 'Итальянский' :
+               lesson.language === 'zh' ? 'Китайский' :
+               lesson.language === 'ja' ? 'Японский' :
+               lesson.language === 'ru' ? 'Русский' : lesson.language}
+            </span>
+            <span className="text-sm bg-amoled-gray text-amoled-text-secondary px-3 py-1 rounded-full">
+              {lesson.level === 'beginner' ? 'Начинающий' :
+               lesson.level === 'intermediate' ? 'Средний' : 'Продвинутый'}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {renderProgressBar()}
+
       {loading ? (
         <div className="flex justify-center py-12">
-          <div className="w-16 h-16 border-4 border-amoled-accent border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-amoled-accent border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : error ? (
-        <div className="bg-red-900 border border-red-700 text-red-100 px-6 py-4 rounded-lg mb-6 shadow-md">
-          <p className="font-medium">{error}</p>
+        <div className="bg-red-900 text-red-100 p-4 rounded-lg border border-red-700">
+          <p>{error}</p>
         </div>
-      ) : lesson ? (
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6 text-amoled-text-primary text-center">
-            {lesson.title}
-          </h1>
-          
-          {renderProgressBar()}
-          
-          {isCompleted ? renderCompletionScreen() : renderWordCard()}
-        </div>
-      ) : null}
+      ) : isCompleted ? (
+        renderCompletionScreen()
+      ) : (
+        renderWordCard()
+      )}
     </div>
   );
 };
