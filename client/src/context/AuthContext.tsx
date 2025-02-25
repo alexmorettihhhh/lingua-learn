@@ -2,14 +2,15 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { IUser } from '../types';
 import * as authService from '../services/auth.service';
 
-interface AuthContextProps {
+export interface AuthContextProps {
   isAuthenticated: boolean;
   user: IUser | null;
   loading: boolean;
   error: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  updateUser: (userData: IUser) => void;
   clearError: () => void;
 }
 
@@ -18,9 +19,10 @@ const AuthContext = createContext<AuthContextProps>({
   user: null,
   loading: true,
   error: null,
-  login: async () => {},
-  register: async () => {},
+  login: async () => false,
+  register: async () => false,
   logout: () => {},
+  updateUser: () => {},
   clearError: () => {},
 });
 
@@ -64,57 +66,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const login = async (email: string, password: string) => {
-    setLoading(true);
-    setError(null);
-    
+  const login = async (email: string, password: string): Promise<boolean> => {
     try {
+      setLoading(true);
+      setError(null);
       const response = await authService.login({ email, password });
       
       if (response.success) {
         localStorage.setItem('token', response.token);
-        setIsAuthenticated(true);
         setUser(response.user);
+        setIsAuthenticated(true);
+        return true;
       } else {
-        setError(response.message || 'Ошибка входа');
+        setError(response.message || 'Ошибка при входе');
         setIsAuthenticated(false);
         setUser(null);
+        return false;
       }
     } catch (error: any) {
-      setError(
-        error.response?.data?.message || 
-        'Ошибка сервера. Пожалуйста, попробуйте позже.'
-      );
+      setError(error.message || 'Ошибка при входе');
       setIsAuthenticated(false);
       setUser(null);
+      return false;
     } finally {
       setLoading(false);
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
-    setLoading(true);
-    setError(null);
-    
+  const register = async (name: string, email: string, password: string): Promise<boolean> => {
     try {
+      setLoading(true);
+      setError(null);
       const response = await authService.register({ name, email, password });
       
       if (response.success) {
         localStorage.setItem('token', response.token);
-        setIsAuthenticated(true);
         setUser(response.user);
+        setIsAuthenticated(true);
+        return true;
       } else {
-        setError(response.message || 'Ошибка регистрации');
+        setError(response.message || 'Ошибка при регистрации');
         setIsAuthenticated(false);
         setUser(null);
+        return false;
       }
     } catch (error: any) {
-      setError(
-        error.response?.data?.message || 
-        'Ошибка сервера. Пожалуйста, попробуйте позже.'
-      );
+      setError(error.message || 'Ошибка при регистрации');
       setIsAuthenticated(false);
       setUser(null);
+      return false;
     } finally {
       setLoading(false);
     }
@@ -125,6 +125,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsAuthenticated(false);
     setUser(null);
     setError(null);
+  };
+
+  const updateUser = (userData: IUser) => {
+    setUser(userData);
   };
 
   const clearError = () => {
@@ -141,6 +145,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         register,
         logout,
+        updateUser,
         clearError,
       }}
     >

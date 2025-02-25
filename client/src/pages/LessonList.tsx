@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as lessonService from '../services/lesson.service';
 import { ILesson } from '../types';
+import '../styles/animations.css';
 
 const LessonList: React.FC = () => {
   const [lessons, setLessons] = useState<ILesson[]>([]);
@@ -124,7 +125,7 @@ const LessonList: React.FC = () => {
           disabled={page === 1}
           className={`px-3 py-1 mx-1 rounded ${
             page === 1
-              ? 'bg-amoled-gray text-amoled-text-disabled cursor-not-allowed opacity-50'
+              ? 'bg-amoled-gray text-amoled-text-secondary cursor-not-allowed opacity-50'
               : 'bg-amoled-gray text-amoled-text-secondary hover:bg-amoled-light hover:text-amoled-text-primary transition-colors'
           }`}
         >
@@ -136,7 +137,7 @@ const LessonList: React.FC = () => {
           disabled={page === totalPages}
           className={`px-3 py-1 mx-1 rounded ${
             page === totalPages
-              ? 'bg-amoled-gray text-amoled-text-disabled cursor-not-allowed opacity-50'
+              ? 'bg-amoled-gray text-amoled-text-secondary cursor-not-allowed opacity-50'
               : 'bg-amoled-gray text-amoled-text-secondary hover:bg-amoled-light hover:text-amoled-text-primary transition-colors'
           }`}
         >
@@ -177,7 +178,7 @@ const LessonList: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-screen bg-amoled-dark">
+    <div className="container mx-auto px-4 py-8 min-h-screen bg-amoled-black animate-fade-in">
       <h1 className="text-3xl font-bold mb-8 text-amoled-text-primary text-center">Доступные уроки</h1>
 
       <div className="bg-amoled-dark p-6 rounded-lg shadow-lg mb-8 border border-amoled-light">
@@ -188,7 +189,7 @@ const LessonList: React.FC = () => {
             </label>
             <select
               id="language"
-              className="shadow border border-amoled-light rounded w-full py-3 px-4 bg-amoled-gray text-amoled-text-primary leading-tight focus:outline-none focus:border-amoled-accent focus:ring-1 focus:ring-amoled-accent transition-colors"
+              className="form-control bg-amoled-gray border-amoled-light text-amoled-text-primary w-full"
               value={selectedLanguage}
               onChange={handleLanguageChange}
             >
@@ -205,7 +206,7 @@ const LessonList: React.FC = () => {
             </label>
             <select
               id="level"
-              className="shadow border border-amoled-light rounded w-full py-3 px-4 bg-amoled-gray text-amoled-text-primary leading-tight focus:outline-none focus:border-amoled-accent focus:ring-1 focus:ring-amoled-accent transition-colors"
+              className="form-control bg-amoled-gray border-amoled-light text-amoled-text-primary w-full"
               value={selectedLevel}
               onChange={handleLevelChange}
             >
@@ -251,41 +252,40 @@ const LessonList: React.FC = () => {
                       />
                     </div>
                   ) : (
-                    <div className="h-48 bg-amoled-dark flex items-center justify-center">
-                      <span className="text-amoled-accent text-4xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                      </span>
+                    <div className="h-48 bg-amoled-light flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-amoled-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
                     </div>
                   )}
+                  
                   <div className="p-5">
-                    <div className="flex justify-between items-start mb-3">
-                      <h3 className="text-xl font-bold text-amoled-text-primary group-hover:text-amoled-accent transition-colors">
+                    <div className="flex justify-between items-start mb-2">
+                      <h2 className="text-xl font-semibold text-amoled-text-primary group-hover:text-amoled-accent transition-colors">
                         {lesson.title}
-                      </h3>
-                      <span className={`px-2 py-1 rounded text-xs font-semibold ${getLevelBadgeClass(lesson.level)}`}>
+                      </h2>
+                      <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${getLevelBadgeClass(lesson.level)}`}>
                         {getLevelName(lesson.level)}
                       </span>
                     </div>
-                    <p className="text-amoled-text-secondary mb-4 line-clamp-3">
+                    
+                    <p className="text-amoled-text-secondary mb-4 line-clamp-2">
                       {lesson.description}
                     </p>
+                    
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-amoled-text-secondary">
+                      <span className="text-amoled-text-secondary text-sm">
                         {getLanguageName(lesson.language)}
                       </span>
-                      <span className="inline-flex items-center text-amoled-accent group-hover:translate-x-1 transition-transform">
-                        Начать
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                      <span className="text-amoled-accent text-sm font-medium">
+                        {lesson.words.length} слов
                       </span>
                     </div>
                   </div>
                 </Link>
               ))}
             </div>
+            
             {totalPages > 1 && renderPagination()}
           </>
         )}

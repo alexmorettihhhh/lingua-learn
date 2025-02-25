@@ -33,16 +33,19 @@ const App: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex items-center justify-center min-h-screen bg-amoled-black">
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 border-4 border-amoled-accent border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p className="text-amoled-text-secondary animate-pulse">Загрузка...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-amoled-black">
       <Header />
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow container mx-auto px-4 py-8 mt-20">
         <Routes>
           {/* Публичные маршруты */}
           <Route path="/" element={<Home />} />

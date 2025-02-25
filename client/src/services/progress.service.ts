@@ -1,7 +1,8 @@
-import axios from 'axios';
-import { API_URL } from '../config';
-import { getAuthHeader } from '../utils/auth';
+import api from './api';
 import { ApiResponse, IProgress } from '../types';
+import axios from 'axios';
+import { getAuthHeader } from '../utils/auth';
+import { API_URL } from '../config';
 
 export interface IProgressResponse {
   success: boolean;
@@ -22,12 +23,9 @@ export interface IProgressResponse {
  */
 export const getLessonProgress = async (lessonId: string): Promise<IProgressResponse> => {
   try {
-    const response = await axios.get(
-      `${API_URL}/progress/lesson/${lessonId}`,
-      { headers: getAuthHeader() }
-    );
+    const response = await api.get<IProgressResponse>(`/progress/lesson/${lessonId}`);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (axios.isAxiosError(error) && error.response) {
       return {
         success: false,
@@ -52,13 +50,12 @@ export const updateLessonProgress = async (
   data: { completionPercentage: number }
 ): Promise<IProgressResponse> => {
   try {
-    const response = await axios.post(
-      `${API_URL}/progress/update`,
-      { lessonId, ...data },
-      { headers: getAuthHeader() }
+    const response = await api.post<IProgressResponse>(
+      `/progress/update`,
+      { lessonId, ...data }
     );
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (axios.isAxiosError(error) && error.response) {
       return {
         success: false,
@@ -78,12 +75,9 @@ export const updateLessonProgress = async (
  */
 export const getAllProgress = async (): Promise<ApiResponse<IProgress[]>> => {
   try {
-    const response = await axios.get(
-      `${API_URL}/progress`,
-      { headers: getAuthHeader() }
-    );
+    const response = await api.get<ApiResponse<IProgress[]>>(`/progress`);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (axios.isAxiosError(error) && error.response) {
       return {
         success: false,
@@ -108,13 +102,12 @@ export const updateWordProgress = async (
   wordId: string
 ): Promise<IProgressResponse> => {
   try {
-    const response = await axios.post(
-      `${API_URL}/progress/update`,
-      { lessonId, wordId },
-      { headers: getAuthHeader() }
+    const response = await api.post<IProgressResponse>(
+      `/progress/update`,
+      { lessonId, wordId }
     );
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (axios.isAxiosError(error) && error.response) {
       return {
         success: false,
@@ -132,7 +125,7 @@ export const updateWordProgress = async (
  * Получает общий прогресс пользователя
  * @returns Объект с общими данными о прогрессе
  */
-export const getUserProgress = async (): Promise<{
+export interface IUserProgressResponse {
   success: boolean;
   message?: string;
   data?: {
@@ -142,14 +135,13 @@ export const getUserProgress = async (): Promise<{
     totalWords: number;
     overallPercentage: number;
   };
-}> => {
+}
+
+export const getUserProgress = async (): Promise<IUserProgressResponse> => {
   try {
-    const response = await axios.get(
-      `${API_URL}/progress/user`,
-      { headers: getAuthHeader() }
-    );
+    const response = await api.get<IUserProgressResponse>(`/progress/user`);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (axios.isAxiosError(error) && error.response) {
       return {
         success: false,
@@ -170,12 +162,9 @@ export const getUserProgress = async (): Promise<{
  */
 export const resetLessonProgress = async (lessonId: string): Promise<IProgressResponse> => {
   try {
-    const response = await axios.delete(
-      `${API_URL}/progress/lesson/${lessonId}`,
-      { headers: getAuthHeader() }
-    );
+    const response = await api.delete<IProgressResponse>(`/progress/lesson/${lessonId}`);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     if (axios.isAxiosError(error) && error.response) {
       return {
         success: false,

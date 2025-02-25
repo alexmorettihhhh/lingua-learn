@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as wordService from '../services/word.service';
 import { IWord } from '../types';
+import '../styles/animations.css';
 
 const WordList: React.FC = () => {
   const [words, setWords] = useState<IWord[]>([]);
@@ -117,8 +118,8 @@ const WordList: React.FC = () => {
           onClick={() => handlePageChange(i)}
           className={`px-3 py-1 mx-1 rounded ${
             page === i
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              ? 'bg-amoled-accent text-amoled-text-primary'
+              : 'bg-amoled-gray text-amoled-text-secondary hover:bg-amoled-light'
           }`}
         >
           {i}
@@ -132,8 +133,8 @@ const WordList: React.FC = () => {
           disabled={page === 1}
           className={`px-3 py-1 mx-1 rounded ${
             page === 1
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              ? 'bg-amoled-gray text-amoled-text-secondary opacity-50 cursor-not-allowed'
+              : 'bg-amoled-gray text-amoled-text-secondary hover:bg-amoled-light'
           }`}
         >
           &laquo;
@@ -144,8 +145,8 @@ const WordList: React.FC = () => {
           disabled={page === totalPages}
           className={`px-3 py-1 mx-1 rounded ${
             page === totalPages
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              ? 'bg-amoled-gray text-amoled-text-secondary opacity-50 cursor-not-allowed'
+              : 'bg-amoled-gray text-amoled-text-secondary hover:bg-amoled-light'
           }`}
         >
           &raquo;
@@ -155,18 +156,18 @@ const WordList: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Словарь</h1>
+    <div className="container mx-auto px-4 py-8 bg-amoled-black animate-fade-in">
+      <h1 className="text-3xl font-bold mb-6 text-amoled-text-primary">Словарь</h1>
 
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+      <div className="bg-amoled-dark p-6 rounded-lg shadow-md mb-8 border border-amoled-light">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="language">
+            <label className="block text-amoled-text-primary text-sm font-bold mb-2" htmlFor="language">
               Язык
             </label>
             <select
               id="language"
-              className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="form-control bg-amoled-gray border-amoled-light text-amoled-text-primary w-full"
               value={selectedLanguage}
               onChange={handleLanguageChange}
             >
@@ -178,12 +179,12 @@ const WordList: React.FC = () => {
             </select>
           </div>
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+            <label className="block text-amoled-text-primary text-sm font-bold mb-2" htmlFor="category">
               Категория
             </label>
             <select
               id="category"
-              className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="form-control bg-amoled-gray border-amoled-light text-amoled-text-primary w-full"
               value={selectedCategory}
               onChange={handleCategoryChange}
             >
@@ -199,22 +200,22 @@ const WordList: React.FC = () => {
 
         {loading ? (
           <div className="flex justify-center py-8">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-4 border-amoled-accent border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : error ? (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-900 border border-red-700 text-red-100 px-4 py-3 rounded mb-4">
             {error}
           </div>
         ) : words.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-amoled-text-secondary">
             Слова не найдены. Попробуйте изменить фильтры.
           </div>
         ) : (
           <>
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white">
+              <table className="min-w-full bg-amoled-gray rounded-lg overflow-hidden">
                 <thead>
-                  <tr className="bg-gray-100 text-gray-700">
+                  <tr className="bg-amoled-light text-amoled-text-primary">
                     <th className="py-3 px-4 text-left">Слово</th>
                     <th className="py-3 px-4 text-left">Перевод</th>
                     <th className="py-3 px-4 text-left">Язык</th>
@@ -225,21 +226,21 @@ const WordList: React.FC = () => {
                 </thead>
                 <tbody>
                   {words.map((word) => (
-                    <tr key={word._id} className="border-b hover:bg-gray-50">
-                      <td className="py-3 px-4">{word.original}</td>
-                      <td className="py-3 px-4">{word.translation}</td>
-                      <td className="py-3 px-4">
+                    <tr key={word._id} className="border-b border-amoled-light hover:bg-amoled-gray">
+                      <td className="py-3 px-4 text-amoled-text-primary">{word.original}</td>
+                      <td className="py-3 px-4 text-amoled-text-primary">{word.translation}</td>
+                      <td className="py-3 px-4 text-amoled-text-primary">
                         {languageOptions.find(lang => lang.code === word.language)?.name || word.language}
                       </td>
-                      <td className="py-3 px-4">{word.category}</td>
+                      <td className="py-3 px-4 text-amoled-text-primary">{word.category}</td>
                       <td className="py-3 px-4">
                         <span
                           className={`px-2 py-1 rounded text-xs font-medium ${
                             String(word.difficulty) === 'easy'
-                              ? 'bg-green-100 text-green-800'
+                              ? 'bg-green-900 text-green-100'
                               : String(word.difficulty) === 'medium'
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : 'bg-red-100 text-red-800'
+                              ? 'bg-yellow-900 text-yellow-100'
+                              : 'bg-red-900 text-red-100'
                           }`}
                         >
                           {String(word.difficulty) === 'easy'
@@ -252,7 +253,7 @@ const WordList: React.FC = () => {
                       <td className="py-3 px-4">
                         <Link
                           to={`/words/${word._id}`}
-                          className="text-blue-600 hover:text-blue-800"
+                          className="text-amoled-accent hover:text-amoled-accent-hover mr-3"
                         >
                           Подробнее
                         </Link>
@@ -262,7 +263,7 @@ const WordList: React.FC = () => {
                 </tbody>
               </table>
             </div>
-            {totalPages > 1 && renderPagination()}
+            {renderPagination()}
           </>
         )}
       </div>

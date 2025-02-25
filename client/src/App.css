@@ -2,6 +2,7 @@
 body {
   background-color: #000000;
   color: #ffffff;
+  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .app-container {
@@ -13,6 +14,7 @@ body {
 
 .main-content {
   flex: 1;
+  margin-top: 70px; /* Add margin for fixed header */
 }
 
 /* Стили для анимаций */
@@ -34,13 +36,32 @@ body {
   transition: opacity 300ms;
 }
 
+/* Floating animation for particles */
+@keyframes float-around {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(10px, 10px);
+  }
+  50% {
+    transform: translate(0, 20px);
+  }
+  75% {
+    transform: translate(-10px, 10px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
 /* AMOLED Theme Overrides */
 .bg-white {
   background-color: #121212 !important;
 }
 
 .text-gray-700 {
-  color: #b3b3b3 !important;
+  color: #e0e0e0 !important;
 }
 
 .text-gray-600 {
@@ -56,19 +77,25 @@ body {
 }
 
 .shadow-md {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.7), 0 2px 6px -1px rgba(0, 0, 0, 0.2) !important;
 }
 
+/* Улучшенные цвета для акцентов */
 .bg-blue-600 {
   background-color: #8c52ff !important;
+  background-image: linear-gradient(135deg, #8c52ff 0%, #7a3ff0 100%) !important;
 }
 
 .bg-blue-700 {
   background-color: #7a3ff0 !important;
+  background-image: linear-gradient(135deg, #7a3ff0 0%, #6a2ee0 100%) !important;
 }
 
 .hover\:bg-blue-700:hover {
   background-color: #7a3ff0 !important;
+  background-image: linear-gradient(135deg, #7a3ff0 0%, #6a2ee0 100%) !important;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
 }
 
 .text-blue-600 {
@@ -81,6 +108,7 @@ body {
 
 .bg-blue-50 {
   background-color: #1e1e1e !important;
+  border-left: 3px solid #8c52ff;
 }
 
 .text-blue-700 {
@@ -89,4 +117,298 @@ body {
 
 .hover\:bg-blue-100:hover {
   background-color: #2d2d2d !important;
+}
+
+/* Новые стили для панели администратора */
+.admin-panel h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, #8c52ff, #5e17eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.admin-card {
+  background-color: #121212;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  border: 1px solid #2d2d2d;
+  overflow: hidden;
+  position: relative;
+}
+
+.admin-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+  border-color: #3d3d3d;
+}
+
+.admin-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #8c52ff, #5e17eb);
+  opacity: 0.8;
+}
+
+.admin-card h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.admin-button {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #8c52ff 0%, #7a3ff0 100%);
+  color: white;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.admin-button:hover {
+  background: linear-gradient(135deg, #7a3ff0 0%, #6a2ee0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(140, 82, 255, 0.3);
+}
+
+/* Стили для статистических карточек */
+.stat-card {
+  padding: 1.25rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-card p:first-child {
+  font-size: 0.875rem;
+  color: #b3b3b3;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card p:last-child {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.stat-users {
+  background-color: #1a1a2e;
+  border-left: 3px solid #8c52ff;
+}
+
+.stat-words {
+  background-color: #1a2e1a;
+  border-left: 3px solid #4ade80;
+}
+
+.stat-lessons {
+  background-color: #2e2a1a;
+  border-left: 3px solid #facc15;
+}
+
+.stat-active {
+  background-color: #2e1a2e;
+  border-left: 3px solid #d946ef;
+}
+
+/* Стили для таблицы */
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+}
+
+.admin-table th {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  font-weight: 500;
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 1px solid #2d2d2d;
+}
+
+.admin-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #2d2d2d;
+  color: #b3b3b3;
+}
+
+.admin-table tr:hover td {
+  background-color: #1a1a1a;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Улучшенные стили для навигации */
+.navbar {
+  background-color: rgba(18, 18, 18, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #2d2d2d;
+  padding: 1rem 0;
+}
+
+.nav-link {
+  color: #b3b3b3;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #ffffff;
+  background-color: rgba(140, 82, 255, 0.1);
+}
+
+/* Стили для кнопок */
+.btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #8c52ff 0%, #7a3ff0 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #7a3ff0 0%, #6a2ee0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(140, 82, 255, 0.3);
+}
+
+.btn-secondary {
+  background-color: #2d2d2d;
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background-color: #3d3d3d;
+  transform: translateY(-2px);
+}
+
+/* Стили для форм */
+.form-control {
+  background-color: #1e1e1e;
+  border: 1px solid #2d2d2d;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #8c52ff;
+  box-shadow: 0 0 0 3px rgba(140, 82, 255, 0.2);
+  outline: none;
+}
+
+.form-label {
+  color: #e0e0e0;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* Анимации для элементов */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+
+/* AMOLED Theme Colors */
+:root {
+  --amoled-black: #000000;
+  --amoled-dark: #121212;
+  --amoled-gray: #1e1e1e;
+  --amoled-light: #2c2c2c;
+  --amoled-accent: #bb86fc;
+  --amoled-accent-hover: #9d4edd;
+  --amoled-text-primary: #ffffff;
+  --amoled-text-secondary: #b0b0b0;
+}
+
+.bg-amoled-black {
+  background-color: var(--amoled-black);
+}
+
+.bg-amoled-dark {
+  background-color: var(--amoled-dark);
+}
+
+.bg-amoled-gray {
+  background-color: var(--amoled-gray);
+}
+
+.bg-amoled-light {
+  background-color: var(--amoled-light);
+}
+
+.bg-amoled-accent {
+  background-color: var(--amoled-accent);
+}
+
+.bg-amoled-accent-hover {
+  background-color: var(--amoled-accent-hover);
+}
+
+.text-amoled-text-primary {
+  color: var(--amoled-text-primary);
+}
+
+.text-amoled-text-secondary {
+  color: var(--amoled-text-secondary);
+}
+
+.text-amoled-accent {
+  color: var(--amoled-accent);
+}
+
+.text-amoled-accent-hover {
+  color: var(--amoled-accent-hover);
+}
+
+.border-amoled-light {
+  border-color: var(--amoled-light);
+}
+
+.border-amoled-accent {
+  border-color: var(--amoled-accent);
 } 

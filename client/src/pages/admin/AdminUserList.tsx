@@ -9,9 +9,11 @@ const AdminUserList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [animateIn, setAnimateIn] = useState(false);
 
   useEffect(() => {
     fetchUsers();
+    setAnimateIn(true);
   }, []);
 
   const fetchUsers = async () => {
@@ -61,89 +63,83 @@ const AdminUserList: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Управление пользователями</h1>
+    <div className="container mx-auto px-4 py-8 admin-panel">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className={`text-4xl font-bold ${animateIn ? 'animate-fade-in' : 'opacity-0'}`}>
+          Управление пользователями
+        </h1>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+      <div className={`admin-card mb-8 ${animateIn ? 'animate-fade-in delay-100' : 'opacity-0'}`}>
         {loading ? (
           <div className="flex justify-center py-8">
-            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-4 border-amoled-accent border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : error ? (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-900 bg-opacity-20 border border-red-800 text-red-400 px-4 py-3 rounded mb-4">
             {error}
           </div>
         ) : users.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-amoled-text-secondary">
             Пользователи не найдены.
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="admin-table">
+              <thead>
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Имя
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Email
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Роль
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Языки
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Действия
-                  </th>
+                  <th>Имя</th>
+                  <th>Email</th>
+                  <th>Роль</th>
+                  <th>Языки</th>
+                  <th>Действия</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {users.map((user) => (
-                  <tr key={user._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{user.name}</div>
+              <tbody>
+                {users.map((user, index) => (
+                  <tr key={user._id} className={`${animateIn ? `animate-fade-in delay-${(index % 5) * 100}` : 'opacity-0'}`}>
+                    <td>
+                      <div className="font-medium text-amoled-text-primary">{user.name}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">{user.email}</div>
+                    <td>
+                      <div className="text-amoled-text-secondary">{user.email}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                    <td>
+                      <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        user.role === 'admin' 
+                          ? 'bg-purple-900 bg-opacity-30 text-purple-400 border border-purple-700' 
+                          : 'bg-blue-900 bg-opacity-30 text-blue-400 border border-blue-700'
                       }`}>
                         {user.role === 'admin' ? 'Администратор' : 'Пользователь'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
+                    <td>
+                      <div>
                         {user.languages && user.languages.length > 0 ? (
                           <div className="flex flex-wrap gap-1">
                             {user.languages.map((lang, index) => (
-                              <span key={index} className="px-2 py-1 text-xs bg-gray-100 rounded-full">
+                              <span key={index} className="px-2 py-1 text-xs bg-amoled-gray rounded-full text-amoled-text-secondary border border-amoled-light">
                                 {lang.language} ({lang.level})
                               </span>
                             ))}
                           </div>
                         ) : (
-                          <span className="text-gray-400">Нет языков</span>
+                          <span className="text-amoled-text-disabled">Нет языков</span>
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
+                    <td>
+                      <div className="flex space-x-3">
                         <Link
                           to={`/admin/users/edit/${user._id}`}
-                          className="text-indigo-600 hover:text-indigo-900"
+                          className="text-amoled-accent hover:text-purple-400 transition-colors"
                         >
                           Редактировать
                         </Link>
                         {user.role !== 'admin' && (
                           <button
                             onClick={() => handleDeleteClick(user._id)}
-                            className="text-red-600 hover:text-red-900"
+                            className="text-red-400 hover:text-red-300 transition-colors"
                           >
                             Удалить
                           </button>
@@ -160,20 +156,20 @@ const AdminUserList: React.FC = () => {
 
       {/* Модальное окно подтверждения удаления */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h3 className="text-xl font-bold mb-4">Подтверждение удаления</h3>
-            <p className="mb-6">Вы уверены, что хотите удалить этого пользователя? Это действие нельзя отменить.</p>
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 animate-fade-in">
+          <div className="admin-card max-w-md w-full">
+            <h3 className="text-xl font-bold mb-4 text-amoled-text-primary">Подтверждение удаления</h3>
+            <p className="mb-6 text-amoled-text-secondary">Вы уверены, что хотите удалить этого пользователя? Это действие нельзя отменить.</p>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+                className="px-4 py-2 bg-amoled-gray text-amoled-text-primary rounded hover:bg-amoled-light transition-colors"
               >
                 Отмена
               </button>
               <button
                 onClick={handleDeleteConfirm}
-                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                className="px-4 py-2 bg-red-900 text-white rounded hover:bg-red-800 transition-colors"
               >
                 Удалить
               </button>

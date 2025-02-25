@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import * as lessonService from '../services/lesson.service';
 import * as progressService from '../services/progress.service';
 import { ILesson, IWord } from '../types';
+import '../styles/animations.css';
 
 const LessonLearn: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,20 +30,17 @@ const LessonLearn: React.FC = () => {
         if (response.success && response.data) {
           setLesson(response.data);
           
-          // Fetch progress for this lesson
           try {
             const progressResponse = await progressService.getLessonProgress(id);
             if (progressResponse.success && progressResponse.data) {
               setProgress(progressResponse.data.completionPercentage);
               setCompletedWords(progressResponse.data.completedWords || []);
               
-              // If all words are completed, set isCompleted to true
               if (progressResponse.data.completionPercentage === 100) {
                 setIsCompleted(true);
               }
             }
           } catch (error) {
-            // If there's no progress yet, that's okay
             console.log('No progress data available');
           }
         } else {
@@ -71,25 +69,18 @@ const LessonLearn: React.FC = () => {
     if (!wordId) return;
     
     try {
-      // Mark word as completed
       await progressService.updateWordProgress(id, wordId);
       
-      // Add to completed words
       if (!completedWords.includes(wordId)) {
         const newCompletedWords = [...completedWords, wordId];
         setCompletedWords(newCompletedWords);
         
-        // Calculate new progress
         const newProgress = Math.round((newCompletedWords.length / lesson.words.length) * 100);
         setProgress(newProgress);
-        
-        // If all words are completed, set isCompleted to true
         if (newProgress === 100) {
           setIsCompleted(true);
         }
       }
-      
-      // Move to next word or complete lesson
       if (currentWordIndex < lesson.words.length - 1) {
         setCurrentWordIndex(currentWordIndex + 1);
         setShowTranslation(false);
@@ -102,7 +93,6 @@ const LessonLearn: React.FC = () => {
   };
 
   const handleDontKnowWord = () => {
-    // Just move to the next word without marking it as known
     if (!lesson || !Array.isArray(lesson.words)) return;
     
     if (currentWordIndex < lesson.words.length - 1) {
